@@ -26,4 +26,7 @@ autoload zplug
 zplug "changyuheng/fz", defer:1
 zplug "rupa/z", use:z.sh
 
+# zsh-interactive-cd
+zplug "changyuheng/zsh-interactive-cd"
+
 zplug load
