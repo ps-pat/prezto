@@ -17,3 +17,8 @@ source $HOME/.profile
 autoload -Uz promptinit
 promptinit
 prompt paradox
+
+# Zplug
+source $HOME/.zplug/init.zsh
+autoload zplug
+zplug load
