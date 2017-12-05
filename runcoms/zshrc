@@ -12,3 +12,8 @@ fi
 
 # Load .profile
 source $HOME/.profile
+
+# Custom prompt
+autoload -Uz promptinit
+promptinit
+prompt paradox
