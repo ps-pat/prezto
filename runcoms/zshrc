@@ -10,9 +10,6 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
-# Load .profile
-source $HOME/.profile
-
 # Custom prompt
 autoload -Uz promptinit
 promptinit
@@ -30,3 +27,85 @@ zplug "rupa/z", use:z.sh
 zplug "changyuheng/zsh-interactive-cd"
 
 zplug load
+
+# Assembly -> hex
+opcode32() {
+  echo $* > tmp.S && gcc -c tmp.S -o tmp.o && objdump -M intel64 -d tmp.o
+  rm -f tmp.o tmp.S
+}
+
+# Beets autocompletion
+eval $(beet completion)
+
+# Cheap aliases.
+alias sudo="sudo "
+alias hping=hping3
+alias links=links2
+alias "?"="$HOME/Documents/scripts/helpme"
+alias beep="paplay $BEEP"
+alias cruft=cruft-ng
+
+# Use exa instead of ls.
+alias ls=exa
+
+# Fancy source code preview.
+prev () {
+    highlight --force -O ansi -l $1 | most
+}
+compdef prev=ls
+
+# ripgrep is an grep-like command.
+alias rg="rg -S -p -C 1"
+
+# Update stuff.
+SUDO_CMD=/usr/bin/sudo
+maj () {
+    $SUDO_CMD aptitude update
+    $SUDO_CMD aptitude full-upgrade
+    cargo install-update -a
+    zprezto-update
+    zplug update
+}
+
+# apt aliases.
+alias ainstall="sudo aptitude install"
+alias asearch="aptitude search"
+alias belongs="apt-file search"
+
+# fzf
+export FZF_DEFAULT_OPTS="
+--border \
+--tiebreak=length
+--multi
+--preview ' highlight --force -O ansi -l {}'"
+export FZF_COMPLETION_TRIGGER=",,"
+
+_fzf_compgen_path () {
+    fd --hidden --follow . "$1"
+}
+
+_fzf_compgen_dir () {
+    fd --type d --hidden --follow . "$1"
+}
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# History
+unalias history 2> /dev/null
+history () {
+    eval $( ([ -n "$ZSH_NAME" ] && \
+                 fc -l 1 || history --preview "") | \
+                fzf +s --tac | sed 's/ *[0-9]* *//')
+}
+alias hist=history
+
+# Git
+git () {
+    if [[ "$@" == "status" ]]; then
+        command tig status
+    elif [[ "$@" == "log" ]]; then
+        command tig log
+    else
+        command git "$@"
+    fi
+}
