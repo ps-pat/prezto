@@ -116,3 +116,8 @@ git () {
         command git "$@"
     fi
 }
+
+# Kitty
+title () {
+command kitty @set-tab-title "$@"
+}
