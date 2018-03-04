@@ -62,9 +62,16 @@ SUDO_CMD=/usr/bin/sudo
 maj () {
     $SUDO_CMD aptitude update
     $SUDO_CMD aptitude full-upgrade
+
     cargo install-update -a
+
     zprezto-update
     zplug update
+
+    pip2 freeze --local | grep -v -- -e | cut -d = -f 1 | xargs pip install -U
+    pip3 freeze --local | grep -v -- -e | cut -d = -f 1 | xargs pip install -U
+
+    beep
 }
 
 # apt aliases.
