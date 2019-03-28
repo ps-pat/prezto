@@ -19,6 +19,9 @@ prompt paradox
 source $HOME/.zplug/init.zsh
 autoload zplug
 
+# zmv.
+autoload zmv
+
 # fz
 zplug "changyuheng/fz", defer:1
 zplug "rupa/z", use:z.sh
@@ -38,7 +41,11 @@ opcode32() {
 eval $(beet completion)
 
 # Cheap aliases.
-alias sudo="sudo "
+SUDO_CMD=/usr/bin/sudo
+sudo () {
+  $SUDO_CMD "$@"
+}
+# alias sudo="sudo "
 alias hping=hping3
 alias links=links2
 alias "?"="$HOME/Documents/scripts/helpme"
@@ -58,7 +65,6 @@ compdef prev=ls
 alias rg="rg -S -p -C 1"
 
 # Update stuff.
-SUDO_CMD=/usr/bin/sudo
 maj () {
     $SUDO_CMD aptitude update
     $SUDO_CMD aptitude full-upgrade
@@ -121,3 +127,9 @@ git () {
 title () {
 command kitty @set-tab-title "$@"
 }
+
+# Xelatex
+alias xelatex="xelatex -shell-escape"
+
+# Emacs prelude color fix.
+export TERM=xterm-256color
